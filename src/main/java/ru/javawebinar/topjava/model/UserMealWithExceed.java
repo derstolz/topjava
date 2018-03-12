@@ -29,4 +29,7 @@ public class UserMealWithExceed {
         this.exceed = exceed;
     }
 
+    public boolean isExceed() {
+        return exceed;
+    }
 }

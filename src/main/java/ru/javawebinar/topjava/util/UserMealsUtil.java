@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,6 +21,7 @@ import java.util.stream.Stream;
  */
 
 public class UserMealsUtil {
+
     public static void main(String[] args) {
         List<UserMeal> mealList = Arrays.asList(
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
@@ -35,13 +38,34 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExceed> getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime,
                                                                    LocalTime endTime, int caloriesPerDay) {
-        List<UserMealWithExceed> exceededList = mealList.stream()
+        /*Map<LocalDate, List<UserMeal>> map = mealList
+                .stream()
+                .collect(Collectors.groupingBy(s -> s.getDateTime().toLocalDate()));
+
+        Map<LocalDate, Boolean> result = new HashMap<>();
+        for (Map.Entry<LocalDate, List<UserMeal>> entry : map.entrySet()) {
+            int resultCalories = entry.getValue()
+                    .stream()
+                    .mapToInt(UserMeal::getCalories)
+                    .sum();
+            result.put(entry.getKey(), resultCalories > caloriesPerDay ? Boolean.TRUE : Boolean.FALSE);
+        }
+        List<UserMealWithExceed> exceedList = mealList
+                .stream()
                 .filter(s -> s.getDateTime().toLocalTime().isAfter(startTime))
                 .filter(s -> s.getDateTime().toLocalTime().isBefore(endTime))
-                .map(s -> new UserMealWithExceed(s, false))
+                .map(s -> new UserMealWithExceed(s, result.get(s.getDateTime().toLocalDate())))
                 .collect(Collectors.toList());
-        System.out.println(exceededList);
+*/
+
+        mealList.stream()
+                .collect(Collectors.groupingBy(s -> s.getDateTime().toLocalDate()))
+                .entrySet()
+                .stream()
+                .peek(s -> System.out.println(s));
+
+
+
         return null;
     }
-
 }
