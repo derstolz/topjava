@@ -58,13 +58,12 @@ public class UserMealsUtil {
                 .collect(Collectors.toList());
 */
 
-        mealList.stream()
-                .collect(Collectors.groupingBy(s -> s.getDateTime().toLocalDate()))
-                .entrySet()
-                .stream()
-                .peek(s -> System.out.println(s));
+        Map<LocalDate, Integer> map = mealList.stream()
+                .collect(Collectors.groupingBy(s -> s.getDateTime().toLocalDate(), Collectors.summingInt(UserMeal::getCalories)));
 
-
+        for (Map.Entry<LocalDate, Integer> entry: map.entrySet()) {
+            System.out.println(entry.getKey() + " /// " + entry.getValue());
+        }
 
         return null;
     }
