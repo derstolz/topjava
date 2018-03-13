@@ -2,10 +2,7 @@ package ru.javawebinar.topjava.model;
 
 import java.time.LocalDateTime;
 
-/**
- * GKislin
- * 11.01.2015.
- */
+
 public class UserMealWithExceed {
     private final LocalDateTime dateTime;
 
@@ -29,7 +26,4 @@ public class UserMealWithExceed {
         this.exceed = exceed;
     }
 
-    public boolean isExceed() {
-        return exceed;
-    }
 }
