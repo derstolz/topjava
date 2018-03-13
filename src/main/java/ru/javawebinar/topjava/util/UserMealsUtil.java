@@ -38,33 +38,28 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExceed> getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime,
                                                                    LocalTime endTime, int caloriesPerDay) {
-        /*Map<LocalDate, List<UserMeal>> map = mealList
-                .stream()
-                .collect(Collectors.groupingBy(s -> s.getDateTime().toLocalDate()));
 
-        Map<LocalDate, Boolean> result = new HashMap<>();
-        for (Map.Entry<LocalDate, List<UserMeal>> entry : map.entrySet()) {
-            int resultCalories = entry.getValue()
-                    .stream()
-                    .mapToInt(UserMeal::getCalories)
-                    .sum();
-            result.put(entry.getKey(), resultCalories > caloriesPerDay ? Boolean.TRUE : Boolean.FALSE);
-        }
-        List<UserMealWithExceed> exceedList = mealList
+        //подсчет общего количества калорий в день
+        Map<LocalDate, Integer> map = mealList
+                .stream()
+                .collect(Collectors.groupingBy(s -> s.getDateTime().toLocalDate(),
+                        Collectors.summingInt(UserMeal::getCalories))
+                );
+
+        return mealList
                 .stream()
                 .filter(s -> s.getDateTime().toLocalTime().isAfter(startTime))
                 .filter(s -> s.getDateTime().toLocalTime().isBefore(endTime))
-                .map(s -> new UserMealWithExceed(s, result.get(s.getDateTime().toLocalDate())))
+                .map(s -> new UserMealWithExceed(s, compareCalories(map, s, caloriesPerDay)))
                 .collect(Collectors.toList());
-*/
+    }
 
-        Map<LocalDate, Integer> map = mealList.stream()
-                .collect(Collectors.groupingBy(s -> s.getDateTime().toLocalDate(), Collectors.summingInt(UserMeal::getCalories)));
-
-        for (Map.Entry<LocalDate, Integer> entry: map.entrySet()) {
-            System.out.println(entry.getKey() + " /// " + entry.getValue());
-        }
-
-        return null;
+    private static boolean compareCalories(Map<LocalDate, Integer> map, UserMeal meal, int caloriesLimit) {
+        //метод проверяет - не превышено ли количество калорий в течении дня
+        LocalDate date = meal.getDateTime().toLocalDate();
+        if (map.get(date) > caloriesLimit)
+            return true;
+        else
+            return false;
     }
 }
