@@ -14,6 +14,7 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<MealWithExceed> meals = MealsUtil.getFilteredWithExceed(MealsUtil.getMeals(), 2000);
+
         request.setAttribute("meals", meals);
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
     }

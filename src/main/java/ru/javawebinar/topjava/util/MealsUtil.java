@@ -17,8 +17,8 @@ public class MealsUtil {
 
 
     public static void main(String[] args) {
-        List<MealWithExceed> mealsWithExceeded = getFilteredWithExceed(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
-        mealsWithExceeded.forEach(System.out::println);
+//        List<MealWithExceed> mealsWithExceeded = getFilteredWithExceed(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
+//        mealsWithExceeded.forEach(System.out::println);
     }
 
     public static List<MealWithExceed> getFilteredWithExceed(List<Meal> meals, int caloriesPerDay) {
@@ -26,8 +26,7 @@ public class MealsUtil {
 
         return meals.stream()
                 .map(meal ->
-                        new MealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(),
-                                caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
+                        new MealWithExceed(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
     }
 
@@ -37,8 +36,7 @@ public class MealsUtil {
         return meals.stream()
                 .filter(meal -> TimeUtil.isBetween(meal.getTime(), startTime, endTime))
                 .map(meal ->
-                        new MealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(),
-                                caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
+                        new MealWithExceed(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
     }
 
@@ -64,6 +62,9 @@ public class MealsUtil {
     public static List<Meal> getMeals() {
         if (meals == null)
             meals = initializeMeals();
+
+        for (int i = 0; i < meals.size(); i++)
+            meals.get(i).setId(i);
         return meals;
     }
 }
