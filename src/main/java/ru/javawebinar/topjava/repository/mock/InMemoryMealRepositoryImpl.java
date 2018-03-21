@@ -7,10 +7,10 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryMealRepositoryImpl implements MealRepository {
@@ -50,7 +50,11 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     @Override
     public Collection<Meal> getAll() {
         log.info("get all meals");
-        return repository.values();
+        List<Meal> meals =  repository.values()
+                .stream()
+                .sorted(Comparator.comparing(Meal::getDateTime))
+                .collect(Collectors.toList());
+        Collections.reverse(meals);
+        return meals;
     }
 }
-
