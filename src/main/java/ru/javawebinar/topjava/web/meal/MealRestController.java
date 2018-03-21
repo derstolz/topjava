@@ -6,6 +6,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 
 import java.util.List;
+import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 
 @Controller
 public class MealRestController {
@@ -24,7 +25,8 @@ public class MealRestController {
         return service.get(id);
     }
 
-    public void update(Meal meal) {
+    public void update(Meal meal, int id) {
+        assureIdConsistent(meal, id);
         service.update(meal);
     }
 

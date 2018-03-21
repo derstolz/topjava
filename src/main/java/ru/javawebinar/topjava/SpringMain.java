@@ -26,11 +26,9 @@ public class SpringMain {
             ProfileRestController profileRestController = appCtx.getBean(ProfileRestController.class);
 
             mealRestController.create(new Meal(LocalDateTime.now(), "Обед", 1000));
-
             mealRestController.create(new Meal(LocalDateTime.now().minusHours(1), "Завтрак", 1000));
 
-            System.out.println(mealRestController.getAll());
-            System.out.println(profileRestController.getAll());
+            System.out.println(profileRestController.get(2));
         }
     }
 }
