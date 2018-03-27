@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
-import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 
 @Service
 public class MealServiceImpl implements MealService {
@@ -25,27 +24,25 @@ public class MealServiceImpl implements MealService {
     @Override
     public Meal create(Meal meal) {
         return repository.save(meal);
-
     }
 
     @Override
-    public void delete(int id) throws NotFoundException {
-        checkNotFoundWithId(repository.delete(id), id);
-
+    public void delete(int id, Integer userId) {
+        checkNotFoundWithId(repository.delete(id, userId), id);
     }
 
     @Override
-    public Meal get(int id) throws NotFoundException {
-        return checkNotFoundWithId(repository.get(id), id);
+    public Meal get(int id, Integer userId) {
+        return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
     @Override
-    public void update(Meal meal) {
+    public void update(Meal meal, Integer userId) {
         checkNotFoundWithId(repository.save(meal), meal.getId());
     }
 
     @Override
-    public List<Meal> getAll() {
-        return new ArrayList<>(repository.getAll());
+    public List<Meal> getAll(Integer userId) {
+        return new ArrayList<>(repository.getAll(userId));
     }
 }

@@ -21,20 +21,20 @@ public class MealRestController {
         return service.create(meal);
     }
 
-    public Meal get(int id) {
-        return service.get(id);
+    public Meal get(int id, Integer userId) {
+        return service.get(id, userId);
     }
 
-    public void update(Meal meal, int id) {
+    public void update(Meal meal, int id, Integer userId) {
         assureIdConsistent(meal, id);
-        service.update(meal);
+        service.update(meal, userId);
     }
 
-    public void delete(int id) {
-        service.delete(id);
+    public void delete(int id, Integer userId) {
+        service.delete(id, userId);
     }
 
-    public List<Meal> getAll() {
-        return service.getAll();
+    public List<Meal> getAll(Integer userId) {
+        return service.getAll(userId);
     }
 }
