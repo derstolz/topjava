@@ -36,15 +36,14 @@ public class JpaMealRepositoryImpl implements MealRepository {
     @Override
     @Transactional
     public boolean delete(int id, int userId) {
-        User ref = entityManager.getReference(User.class, userId);
-        return entityManager
-                .createQuery("DELETE FROM Meal m WHERE m.id =:id AND m.user =:ref", Meal.class)
+        return entityManager.createQuery("DELETE FROM Meal m WHERE m.id =:id AND m.user.id =:userId")
                 .setParameter("id", id)
-                .setParameter("ref", ref)
+                .setParameter("userId", userId)
                 .executeUpdate() != 0;
     }
 
     @Override
+    @Transactional
     public Meal get(int id, int userId) {
         Meal meal = entityManager.find(Meal.class, id);
         if (meal.getUser() == entityManager.getReference(User.class, userId))
@@ -54,6 +53,7 @@ public class JpaMealRepositoryImpl implements MealRepository {
     }
 
     @Override
+    @Transactional
     public List<Meal> getAll(int userId) {
         return entityManager
                 .createQuery("SELECT m FROM Meal m WHERE m.user.id =:userId ORDER BY m.dateTime DESC", Meal.class)
@@ -62,6 +62,7 @@ public class JpaMealRepositoryImpl implements MealRepository {
     }
 
     @Override
+    @Transactional
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         return entityManager
                 .createQuery("SELECT m FROM Meal m WHERE m.user.id =:userId " +
