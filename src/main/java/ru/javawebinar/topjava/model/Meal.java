@@ -6,28 +6,32 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = "id", name = "meals_unique_user_datetime_idx")})
-@NamedQueries(value = {
-        @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id =: userId"),
-        @NamedQuery(name = Meal.BY_USER, query = "SELECT m FROM Meal m WHERE m.user.id =: userId"),
-        @NamedQuery(name = Meal.GET_BEETWEEN, query = "SELECT m FROM Meal m WHERE m.dateTime BETWEEN :startDate AND :endDate"),
-})
+//@NamedQueries(value = {
+//        @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id =:userId"),
+//        @NamedQuery(name = Meal.BY_USER, query = "SELECT m FROM Meal m WHERE m.user.id =:userId")
+//        @NamedQuery(name = Meal.GET_BEETWEEN, query = "SELECT m FROM Meal m WHERE m.user.id =:userId" +
+//                " AND m.convertedDateTime BETWEEN :startDate AND :endDate"),
+//})
 public class Meal extends AbstractBaseEntity {
 
-    public static final String DELETE = "Meal.delete";
-    public static final String BY_USER = "Meal.getByUser";
-    public static final String GET_BEETWEEN = "Meal.getBetween";
+//    public static final String DELETE = "Meal.delete";
+//    public static final String BY_USER = "Meal.getByUser";
+//    public static final String GET_BEETWEEN = "Meal.getBetween";
 
 
-
-    @Column(name = "datetime", nullable = false)
+    @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;
+
+//    private Date convertedDateTime = Timestamp.valueOf(dateTime);
 
     @Column(name = "description", nullable = false)
     @NotBlank
@@ -36,11 +40,13 @@ public class Meal extends AbstractBaseEntity {
 
     @Column(name = "calories", nullable = false)
     @NotNull
-    @Range(min = 10, max = 10000)
+    @Range(min = 10, max = 5000)
     private int calories;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
     public Meal() {

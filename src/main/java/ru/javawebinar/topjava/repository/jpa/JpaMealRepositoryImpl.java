@@ -38,12 +38,13 @@ public class JpaMealRepositoryImpl implements MealRepository {
 //        User ref = entityManager.getReference(User.class, userId);
 //        Query query = entityManager.createQuery("DELETE FROM Meal m WHERE m.id =: id AND m.user =: ref");
 //        return query.setParameter("id", id).executeUpdate() != 0;
-
-        return entityManager
-                .createNamedQuery(Meal.DELETE, Meal.class)
-                .setParameter("id", id)
-                .setParameter("userId", userId)
-                .executeUpdate() != 0;
+//
+//        return entityManager
+//                .createNamedQuery(Meal.DELETE, Meal.class)
+//                .setParameter("id", id)
+//                .setParameter("userId", userId)
+//                .executeUpdate() != 0;
+        return false;
     }
 
     @Override
@@ -57,16 +58,24 @@ public class JpaMealRepositoryImpl implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
+//        return entityManager
+//                .createNamedQuery(Meal.BY_USER, Meal.class)
+//                .setParameter("userId", userId)
+//                .getResultList();
         return entityManager
-                .createNamedQuery(Meal.BY_USER, Meal.class)
+                .createQuery("SELECT m FROM Meal m WHERE m.user.id =:userId ORDER BY m.dateTime DESC")
                 .setParameter("userId", userId)
                 .getResultList();
     }
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        return entityManager
-                .createNamedQuery(Meal.GET_BEETWEEN, Meal.class)
-                .setParameter("start")
+//        return entityManager
+//                .createNamedQuery(Meal.GET_BEETWEEN, Meal.class)
+//                .setParameter("startDate", startDate)
+//                .setParameter("endDate", endDate)
+//                .setParameter("userId", userId)
+//                .getResultList();
+        return null;
     }
 }
