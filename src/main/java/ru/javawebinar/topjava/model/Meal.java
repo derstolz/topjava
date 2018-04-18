@@ -14,24 +14,11 @@ import java.util.Date;
 
 @Entity
 @Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = "id", name = "meals_unique_user_datetime_idx")})
-//@NamedQueries(value = {
-//        @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id =:userId"),
-//        @NamedQuery(name = Meal.BY_USER, query = "SELECT m FROM Meal m WHERE m.user.id =:userId")
-//        @NamedQuery(name = Meal.GET_BEETWEEN, query = "SELECT m FROM Meal m WHERE m.user.id =:userId" +
-//                " AND m.convertedDateTime BETWEEN :startDate AND :endDate"),
-//})
 public class Meal extends AbstractBaseEntity {
-
-//    public static final String DELETE = "Meal.delete";
-//    public static final String BY_USER = "Meal.getByUser";
-//    public static final String GET_BEETWEEN = "Meal.getBetween";
-
 
     @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;
-
-//    private Date convertedDateTime = Timestamp.valueOf(dateTime);
 
     @Column(name = "description", nullable = false)
     @NotBlank
