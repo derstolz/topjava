@@ -37,10 +37,11 @@ public class SpringMain {
 //    }
 
     public static void main(String[] args) {
-        System.setProperty("spring.profiles.active", "postgres");
+        System.setProperty("spring.profiles.active", "postgres, jdbc");
         ConfigurableApplicationContext applicationContext = new ClassPathXmlApplicationContext
                 ("classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml");
 
         System.out.println(Arrays.toString(applicationContext.getBeanDefinitionNames()));
+        System.out.println(Profiles.getActiveDbProfile());
     }
 }
