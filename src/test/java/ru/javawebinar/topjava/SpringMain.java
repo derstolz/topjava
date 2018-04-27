@@ -7,11 +7,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.service.MealService;
+import ru.javawebinar.topjava.service.MealServiceImpl;
 import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.Arrays;
@@ -37,11 +40,16 @@ public class SpringMain {
 //    }
 
     public static void main(String[] args) {
-        System.setProperty("spring.profiles.active", "postgres, jdbc");
+        System.setProperty("spring.profiles.active", "postgres, datajpa");
         ConfigurableApplicationContext applicationContext = new ClassPathXmlApplicationContext
                 ("classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml");
 
         System.out.println(Arrays.toString(applicationContext.getBeanDefinitionNames()));
-        System.out.println(Profiles.getActiveDbProfile());
+        MealService mealService = applicationContext.getBean(MealServiceImpl.class);
+        System.out.println(mealService.get(100002, 100000));
+        mealService.delete(100002, 100000);
+        System.out.println(mealService.getAll(100000));
+        System.out.println(mealService.getBetweenDates
+                (LocalDate.of(2018, Month.APRIL, 24), LocalDate.of(2018, Month.APRIL, 25), 100000));
     }
 }
