@@ -35,7 +35,6 @@ public class JdbcMealServiceTest extends AbstractMealServiceTest {
         System.out.println(service.getAll(USER_ID));
         service.delete(MEAL1_ID, USER_ID);
     }
-    
 
     @Override
     @Test
@@ -50,7 +49,6 @@ public class JdbcMealServiceTest extends AbstractMealServiceTest {
         Meal actual = service.get(MEAL1_ID, USER_ID);
     }
 
-    
     @Override
     @Test
     public void update() throws Exception {
