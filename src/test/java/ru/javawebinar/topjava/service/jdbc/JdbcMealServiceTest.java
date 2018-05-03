@@ -32,7 +32,6 @@ public class JdbcMealServiceTest extends AbstractMealServiceTest {
     @Override
     @Test
     public void delete() throws Exception {
-        System.out.println(service.getAll(USER_ID));
         service.delete(MEAL1_ID, USER_ID);
     }
 
