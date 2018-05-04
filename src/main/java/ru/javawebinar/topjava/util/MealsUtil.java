@@ -1,9 +1,13 @@
 package ru.javawebinar.topjava.util;
 
+import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealWithExceed;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
@@ -12,6 +16,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDate;
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
 
 public class MealsUtil {
 
@@ -43,5 +49,24 @@ public class MealsUtil {
 
     private static MealWithExceed createWithExceed(Meal meal, boolean exceeded) {
         return new MealWithExceed(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceeded);
+    }
+
+    public static List<MealWithExceed> getFiltered (MealService service, HttpServletRequest request) {
+        LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
+        LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
+        LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
+        LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
+
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+
+        return MealsUtil
+                .getWithExceeded(service.getBetweenDateTimes(startDateTime, endDateTime, getUserId())
+                        ,AuthorizedUser.getCaloriesPerDay());
+    }
+
+
+    public static int getUserId() {
+        return AuthorizedUser.id();
     }
 }

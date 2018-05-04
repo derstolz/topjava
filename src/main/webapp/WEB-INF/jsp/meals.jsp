@@ -10,7 +10,7 @@
 <body>
 <section>
     <h3>Meals</h3>
-    <form method="post" action="meals?action=filter">
+    <form method="post" action="meals?filter">
         <dl>
             <dt>From Date:</dt>
             <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
@@ -53,7 +53,6 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-                <%--<td><a href="meals?action=update&id=${meal.id}">Update</a></td>--%>
                 <td><a href="meals/update/${meal.id}">Update</a></td>
                 <td><a href="meals/delete/${meal.id}">Delete</a></td>
             </tr>

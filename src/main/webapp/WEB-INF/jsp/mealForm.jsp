@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 <head>
@@ -8,8 +9,11 @@
 </head>
 <body>
 <section>
-    <h3><a href="index.html">Home</a></h3>
-    <h2>${param.action == 'create' ? 'Create meal' : 'Edit meal'}</h2>
+    <h3><a href="/topjava">Home</a></h3>
+    <%--<h2>${param.action == 'create' ? 'Create meal' : 'Edit meal'}</h2>--%>
+    <c:set var="url" value="${requestScope['javax.servlet.forward.request_uri']}"></c:set>
+    <c:set var="request" value="${fn:substring(url, url.lastIndexOf(\"/\") + 1, fn:length(url))}"></c:set>
+    <h2>${request == 'create' ? 'Create meal' : 'Edit meal'}</h2>
     <hr>
     <jsp:useBean id="meal" class="ru.javawebinar.topjava.model.Meal" scope="request"/>
     <form method="post" action="meals">
