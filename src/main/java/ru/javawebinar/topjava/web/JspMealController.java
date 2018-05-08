@@ -41,7 +41,7 @@ public class JspMealController {
         this.service = service;
     }
 
-    @RequestMapping("/meals")
+    @GetMapping("/meals")
     public String meals(Model model, HttpServletRequest request) throws ServletException, IOException {
         List<MealWithExceed> meals;
 
@@ -53,6 +53,21 @@ public class JspMealController {
 
         model.addAttribute("meals", meals);
         return "meals";
+    }
+
+    @PostMapping("/meals/add")
+    public String create (Model model, HttpServletRequest request, HttpServletResponse response) {
+        Meal meal = new Meal(
+                LocalDateTime.parse(request.getParameter("dateTime")),
+                request.getParameter("description"),
+                Integer.parseInt(request.getParameter("calories")));
+
+        if (request.getParameter("id").isEmpty()){
+            service.create(meal, AuthorizedUser.id());
+        }
+        else
+            service.update(meal, AuthorizedUser.id());
+        return "redirect:/meals";
     }
 
     @GetMapping("/meals/delete/{id}")

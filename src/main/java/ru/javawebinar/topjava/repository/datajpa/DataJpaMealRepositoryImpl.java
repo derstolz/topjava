@@ -25,6 +25,8 @@ public class DataJpaMealRepositoryImpl implements MealRepository {
             return null;
         }
         meal.setUser(crudUserRepository.getOne(userId));
+        Integer id = crudMealRepository.findFirstByOrderByIdDesc().getId() + 1;
+        meal.setId(id);
         return crudMealRepository.save(meal);
     }
 
